@@ -10,7 +10,7 @@ export const nativeToken = {
     name: 'Mantle',
     coingeckoID: 'mantle',
     decimals: 18,
-    address: '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000',
+    address: '0x92e6A4b26E597b9330CF5007392f0e9Cb0fA5A96', // let's assume that this is the right address for the sake of this implementation. (MNT-cMNT Stable Pool)
     abi: mantleABI
 }
 
@@ -47,7 +47,6 @@ export class MantleSFModule extends BaseSFModule {
             abi: nativeToken.abi,
             client: this.client,
         });
-        // I'm not sure why the total supply is 0.
         const totalSupply = (await contract.read.totalSupply()) as BigInt;
         const supply = formatUnits(totalSupply as bigint, nativeToken.decimals);
         const totalSupplyAsNumber = Number(supply);
