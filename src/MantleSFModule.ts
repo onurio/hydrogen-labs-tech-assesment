@@ -14,7 +14,6 @@ export class MantleSFModule extends BaseSFModule {
         this.client = client;
     }
 
-
     async queryProfitFromCorruption(): Promise<number> {
         const balancePromises = contracts.map(async (c): Promise<number> => {
             const contract = getContract({
@@ -24,7 +23,7 @@ export class MantleSFModule extends BaseSFModule {
             })
 
             const totalSupply = (await contract.read.totalSupply([])) as BigInt;
-            const supply = formatUnits(totalSupply as bigint, 18);
+            const supply = formatUnits(totalSupply as bigint, c.decimals);
             const totalSupplyAsNumber = Number(supply)
             const pendleToUsd = await getTokenValueFromCoinGecko('pendle');
             return totalSupplyAsNumber * pendleToUsd;
