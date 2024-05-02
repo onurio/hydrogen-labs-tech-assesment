@@ -39,6 +39,15 @@ export class MantleSFModule extends BaseSFModule {
 
 
     async queryProfitFromCorruption(): Promise<number> {
+
+        // Getting the balance won't work, since it's most TVL is not in ETH.
+
+        /*
+        we should be getting:
+         Value of native assets
+         Value of the largest third party assets
+         Value of the largest bridged assets
+        */
         const balancePromises = contracts.map(async (contract): Promise<BigInt> => {
             return await this.client.getBalance({ address: getAddress(contract.address) });
         });
