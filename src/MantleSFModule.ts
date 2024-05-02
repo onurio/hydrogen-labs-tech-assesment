@@ -1,6 +1,7 @@
 
-import { Chain, createPublicClient, http } from "viem";
+import { Address, Chain, PublicClient, createPublicClient, getAddress, getContract, http } from "viem";
 import { BaseSFModule } from "./BaseSFModule";
+import viem from "viem";
 
 const mantleTestnet: Chain = {
     id: 5001, name: "Mantle Testnet", nativeCurrency: { decimals: 18, name: "Mantle", symbol: "MNT", },
@@ -22,19 +23,26 @@ const mantleTestnet: Chain = {
     },
 };
 
+const contracts = [
+    {
+        name: 'Pendle',
+        address: '0x808507121b80c02388fad14726482e061b8da827',
+        abi: []
+    }
+]
+
 export class MantleSFModule extends BaseSFModule {
-    client: any;
+    client: PublicClient;
     constructor() {
         super('MantleSFModule', 'IDPLACEHOLDER')
         const client = createPublicClient({ chain: mantleTestnet, transport: http(), });
-
+        this.client = client;
     }
 
 
     async queryProfitFromCorruption(): Promise<number> {
-
-        // this.client.getBalance('0x808507121b80c02388fad14726482e061b8da827')
-        return Promise.resolve(1000);
+        const balance = await this.client.getBalance({ address: getAddress('0x808507121b80c02388fad14726482e061b8da827') });
+        return Promise.resolve(0);
     }
 
     async queryCostOfCorruption(): Promise<number> {
