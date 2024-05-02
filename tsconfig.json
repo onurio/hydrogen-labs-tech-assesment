@@ -5,7 +5,8 @@
     "strict": true,            // Enable all strict type-checking options
     "esModuleInterop": true,   // Enables emit interoperability between CommonJS and ES Modules
     "skipLibCheck": true,      // Skip type checking of all declaration files (*.d.ts)
-    "outDir": "./dist"         // Redirect output structure to the directory
+    "outDir": "./dist",         // Redirect output structure to the directory
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*"                // Specify the files to be compiled

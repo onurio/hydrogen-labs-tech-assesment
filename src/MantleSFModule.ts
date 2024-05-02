@@ -1,6 +1,8 @@
 
-import { Address, Chain, PublicClient, createPublicClient, formatUnits, getAddress, getContract, http } from "viem";
+import { Chain, PublicClient, createPublicClient, getAddress, http } from "viem";
 import { BaseSFModule } from "./BaseSFModule";
+import { getTokenValueFromCoinGecko } from "./CoinGecko";
+
 
 const mantleTestnet: Chain = {
     id: 5001, name: "Mantle Testnet", nativeCurrency: { decimals: 18, name: "Mantle", symbol: "MNT", },
@@ -25,7 +27,15 @@ const mantleTestnet: Chain = {
 const contracts = [
     {
         name: 'Pendle',
+        coingeckoId: 'pendle',
         address: '0x808507121b80c02388fad14726482e061b8da827',
+        abi: import('./abi.json'),
+        tokens: [
+            {
+                name: 'TRU',
+                address: '0xf65B5C5104c4faFD4b709d9D60a185eAE063276c'
+            }
+        ]
     }
 ]
 
@@ -40,7 +50,7 @@ export class MantleSFModule extends BaseSFModule {
 
     async queryProfitFromCorruption(): Promise<number> {
 
-        // Getting the balance won't work, since it's most TVL is not in ETH.
+        // Getting the balance won't work, since it's most TVL is not in ETH.g
 
         /*
         we should be getting:
@@ -51,6 +61,7 @@ export class MantleSFModule extends BaseSFModule {
         const balancePromises = contracts.map(async (contract): Promise<BigInt> => {
             return await this.client.getBalance({ address: getAddress(contract.address) });
         });
+
         const balances = await Promise.all(balancePromises);
         // ts was complaining that I can't add BigInts. I'm not sure if this is the best way to do it
         const totalPfC = balances.reduce((acc, balance) => acc + Number(balance), 0);
@@ -61,4 +72,7 @@ export class MantleSFModule extends BaseSFModule {
         // get the Mantle staking value from the contract
         return Promise.resolve(1000);
     }
+
+
+
 }
