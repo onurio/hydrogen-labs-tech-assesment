@@ -1,8 +1,8 @@
 import { BaseSFModule } from "./BaseSFModule";
-import { createPublicClient, http } from "viem";
+import { Chain, createPublicClient, http } from "viem";
 
-const mantleTestnet = {
-    id: 5001, name: "Mantle Testnet", network: "Mantle Testnet", nativeCurrency: { decimals: 18, name: "Mantle", symbol: "MNT", },
+const mantleTestnet: Chain = {
+    id: 5001, name: "Mantle Testnet", nativeCurrency: { decimals: 18, name: "Mantle", symbol: "MNT", },
     rpcUrls: {
         public: { http: ["https://rpc.testnet.mantle.xyz"] },
         default: { http: ["https://rpc.testnet.mantle.xyz"] },
