@@ -4,7 +4,7 @@ import {
   SFModuleNodeConfig,
   SFModuleResponse,
   defaultSFModuleConfig,
-} from "../types";
+} from "./types";
 
 export abstract class BaseSFModule implements SFModule {
   public name: string;

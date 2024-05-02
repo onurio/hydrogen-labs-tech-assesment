@@ -1,5 +1,6 @@
-import { BaseSFModule } from "./BaseSFModule";
+
 import { Chain, createPublicClient, http } from "viem";
+import { BaseSFModule } from "./BaseSFModule";
 
 const mantleTestnet: Chain = {
     id: 5001, name: "Mantle Testnet", nativeCurrency: { decimals: 18, name: "Mantle", symbol: "MNT", },
