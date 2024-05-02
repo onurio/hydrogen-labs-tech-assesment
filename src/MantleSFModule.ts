@@ -47,6 +47,7 @@ export class MantleSFModule extends BaseSFModule {
             abi: nativeToken.abi,
             client: this.client,
         });
+        // I'm not sure why the total supply is 0.
         const totalSupply = (await contract.read.totalSupply()) as BigInt;
         const supply = formatUnits(totalSupply as bigint, nativeToken.decimals);
         const totalSupplyAsNumber = Number(supply);
