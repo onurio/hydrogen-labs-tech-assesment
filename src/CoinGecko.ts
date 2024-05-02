@@ -4,6 +4,7 @@ const fetch = require('node-fetch');
 const config = dotenv.config() as any;
 
 
+// TODO: add caching so that multiple calls to the same tokens don't result in multiple calls to CoinGecko
 export async function getTokenValueFromCoinGecko(token: string): Promise<number> {
     try {
         const url = `https://api.coingecko.com/api/v3/simple/price?ids=${token}&vs_currencies=usd`;
@@ -14,7 +15,6 @@ export async function getTokenValueFromCoinGecko(token: string): Promise<number>
 
         const resp = await fetch(url, options);
         const json = await resp.json();
-        console.log(json)
         return json[token].usd;
 
     } catch (error) {
