@@ -50,7 +50,7 @@ export class MantleSFModule extends BaseSFModule {
 
     async queryProfitFromCorruption(): Promise<number> {
 
-        // Getting the balance won't work, since it's most TVL is not in ETH.g
+        // Getting the balance won't work, since most TVL is not in ETH.g
 
         /*
         we should be getting:
