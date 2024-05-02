@@ -1,8 +1,8 @@
 
-import { Chain, PublicClient, createPublicClient, getAddress, http } from "viem";
+import { Chain, PublicClient, createPublicClient, getAddress, http, parseAbi } from "viem";
 import { BaseSFModule } from "./BaseSFModule";
 import { getTokenValueFromCoinGecko } from "./CoinGecko";
-
+import pendleABI from "./contracts/pendle/abi.json";
 
 const mantleTestnet: Chain = {
     id: 5001, name: "Mantle Testnet", nativeCurrency: { decimals: 18, name: "Mantle", symbol: "MNT", },
@@ -29,7 +29,7 @@ const contracts = [
         name: 'Pendle',
         coingeckoId: 'pendle',
         address: '0x808507121b80c02388fad14726482e061b8da827',
-        abi: import('./abi.json'),
+        abi: pendleABI,
         tokens: [
             {
                 name: 'TRU',
@@ -62,6 +62,20 @@ export class MantleSFModule extends BaseSFModule {
             return await this.client.getBalance({ address: getAddress(contract.address) });
         });
 
+
+        const calls = await this.client.multicall({
+            contracts: [
+                {
+                    functionName: 'totalSupply',
+                    address: getAddress(contracts[0].address),
+                    abi: contracts[0].abi,
+                }
+            ]
+        });
+
+        console.log(calls);
+
+
         const balances = await Promise.all(balancePromises);
         // ts was complaining that I can't add BigInts. I'm not sure if this is the best way to do it
         const totalPfC = balances.reduce((acc, balance) => acc + Number(balance), 0);
@@ -69,7 +83,7 @@ export class MantleSFModule extends BaseSFModule {
     }
 
     async queryCostOfCorruption(): Promise<number> {
-        // get the Mantle staking value from the contract
+
         return Promise.resolve(1000);
     }
 
