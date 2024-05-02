@@ -1,10 +1,17 @@
 
-import { PublicClient, createPublicClient, formatUnits, getAddress, getContract, http, parseAbi, parseUnits } from "viem";
+import { PublicClient, createPublicClient, erc20Abi, formatUnits, getAddress, getContract, http, parseAbi, parseUnits } from "viem";
 import { BaseSFModule } from "./BaseSFModule";
 import { getTokenValueFromCoinGecko } from "./CoinGecko";
 import contracts from "./contracts";
 import { mantle } from "./chains";
 
+export const nativeToken = {
+    name: 'Mantle',
+    coingeckoID: 'mantle',
+    decimals: 18,
+    address: '0x3c3a81e81dc49A522A592e7622A7E711c06bf354',
+    abi: erc20Abi
+}
 
 export class MantleSFModule extends BaseSFModule {
     client: PublicClient;
@@ -34,7 +41,15 @@ export class MantleSFModule extends BaseSFModule {
     }
 
     async queryCostOfCorruption(): Promise<number> {
-
-        return Promise.resolve(1000);
+        const contract = getContract({
+            address: getAddress(nativeToken.address),
+            abi: nativeToken.abi,
+            client: this.client,
+        });
+        const totalSupply = (await contract.read.totalSupply()) as BigInt;
+        const supply = formatUnits(totalSupply as bigint, nativeToken.decimals);
+        const totalSupplyAsNumber = 1000;
+        const mntToUsd = await getTokenValueFromCoinGecko(nativeToken.coingeckoID);
+        return totalSupplyAsNumber * mntToUsd * 0.51;
     }
 }

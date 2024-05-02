@@ -14,6 +14,7 @@ export async function getTokenValueFromCoinGecko(token: string): Promise<number>
 
         const resp = await fetch(url, options);
         const json = await resp.json();
+        console.log(json)
         return json[token].usd;
 
     } catch (error) {

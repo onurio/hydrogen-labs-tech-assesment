@@ -1,5 +1,6 @@
 import pendleABI from "./pendle/abi.json";
 import merchantMoeABI from "./merchantMoe/abi.json";
+import { erc20Abi } from "viem";
 
 const contracts = [
     {
@@ -17,6 +18,8 @@ const contracts = [
         decimals: 18,
     }
 ]
+
+
 
 
 export default contracts;
