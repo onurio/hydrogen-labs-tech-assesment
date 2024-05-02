@@ -6,13 +6,13 @@ import viem from "viem";
 const mantleTestnet: Chain = {
     id: 5001, name: "Mantle Testnet", nativeCurrency: { decimals: 18, name: "Mantle", symbol: "MNT", },
     rpcUrls: {
-        public: { http: ["https://rpc.testnet.mantle.xyz"] },
-        default: { http: ["https://rpc.testnet.mantle.xyz"] },
+        public: { http: ["https://rpc.mantle.xyz"] },
+        default: { http: ["https://rpc.mantle.xyz"] },
     },
     blockExplorers: {
         default: {
             name: "Mantle Explorer",
-            url: "https://explorer.testnet.mantle.xyz/",
+            url: "https://explorer.mantle.xyz/",
         },
     },
     contracts: {
@@ -27,7 +27,6 @@ const contracts = [
     {
         name: 'Pendle',
         address: '0x808507121b80c02388fad14726482e061b8da827',
-        abi: []
     }
 ]
 
@@ -41,8 +40,13 @@ export class MantleSFModule extends BaseSFModule {
 
 
     async queryProfitFromCorruption(): Promise<number> {
-        const balance = await this.client.getBalance({ address: getAddress('0x808507121b80c02388fad14726482e061b8da827') });
-        return Promise.resolve(0);
+        const balancePromises = contracts.map(async (contract) => {
+            const balance = await this.client.getBalance({ address: getAddress(contract.address) });
+            return parseFloat(balance.toString());
+        });
+        const balances = await Promise.all(balancePromises);
+        const totalPfC = balances.reduce((acc, balance) => acc + balance, 0);
+        return Promise.resolve(parseFloat(totalPfC.toString()));
     }
 
     async queryCostOfCorruption(): Promise<number> {
